@@ -1,1 +1,151 @@
-/* board — Task 2 */
+// board.js — SVG chessboard renderer
+
+var SQUARE_SIZE = 60;
+var BOARD_SIZE = SQUARE_SIZE * 8; // 480
+
+var PIECE_UNICODE = {
+  wK: "♔", wQ: "♕", wR: "♖", wB: "♗", wN: "♘", wP: "♙",
+  bK: "♚", bQ: "♛", bR: "♜", bB: "♝", bN: "♞", bP: "♟"
+};
+
+var LIGHT_SQUARE = "#f0d9b5";
+var DARK_SQUARE  = "#b58863";
+var HIGHLIGHT_FROM = "#cdd26a";
+var HIGHLIGHT_TO   = "#aaa23a";
+
+function squareToCoords(square) {
+  var file = square.charCodeAt(0) - 97; // a=0, h=7
+  var rank = parseInt(square[1], 10);   // 1–8
+  return {
+    x: file * SQUARE_SIZE,
+    y: (8 - rank) * SQUARE_SIZE        // rank 8 → y=0, rank 1 → y=420
+  };
+}
+
+function getInitialBoardState() {
+  return {
+    a1:"wR", b1:"wN", c1:"wB", d1:"wQ", e1:"wK", f1:"wB", g1:"wN", h1:"wR",
+    a2:"wP", b2:"wP", c2:"wP", d2:"wP", e2:"wP", f2:"wP", g2:"wP", h2:"wP",
+    a7:"bP", b7:"bP", c7:"bP", d7:"bP", e7:"bP", f7:"bP", g7:"bP", h7:"bP",
+    a8:"bR", b8:"bN", c8:"bB", d8:"bQ", e8:"bK", f8:"bB", g8:"bN", h8:"bR"
+  };
+}
+
+function applyStep(step, boardState) {
+  // Shallow-copy the state
+  var state = Object.assign({}, boardState);
+
+  // Move the piece (overwrites any captured piece on `to`)
+  state[step.to] = state[step.from];
+  delete state[step.from];
+
+  // Handle castling: also move the rook
+  if (step.special === "castle-kingside") {
+    if (step.piece === "wK") {
+      state["f1"] = state["h1"]; delete state["h1"];
+    } else {
+      state["f8"] = state["h8"]; delete state["h8"];
+    }
+  }
+
+  return state;
+}
+
+function createBoard(container) {
+  var svgNS = "http://www.w3.org/2000/svg";
+  var svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("viewBox", "0 0 " + BOARD_SIZE + " " + BOARD_SIZE);
+  svg.setAttribute("width", "100%");
+  svg.style.display = "block";
+  svg.id = "chess-svg";
+
+  var squareLookup = new Map();
+
+  // Draw 64 squares
+  for (var rank = 8; rank >= 1; rank--) {
+    for (var fi = 0; fi < 8; fi++) {
+      var file = String.fromCharCode(97 + fi);
+      var squareName = file + rank;
+      var x = fi * SQUARE_SIZE;
+      var y = (8 - rank) * SQUARE_SIZE;
+      var isLight = (rank + fi) % 2 !== 0;
+
+      var rect = document.createElementNS(svgNS, "rect");
+      rect.setAttribute("x", x);
+      rect.setAttribute("y", y);
+      rect.setAttribute("width", SQUARE_SIZE);
+      rect.setAttribute("height", SQUARE_SIZE);
+      rect.style.fill = isLight ? LIGHT_SQUARE : DARK_SQUARE;
+      rect.classList.add("square");
+      rect.dataset.square = squareName;
+      rect.dataset.isLight = isLight ? "1" : "0";
+      svg.appendChild(rect);
+      squareLookup.set(squareName, rect);
+    }
+  }
+
+  // Rank labels (1–8 on the left edge of each row)
+  for (var r = 8; r >= 1; r--) {
+    var isLightLabel = (r % 2 !== 0); // alternates
+    var lbl = document.createElementNS(svgNS, "text");
+    lbl.setAttribute("x", 3);
+    lbl.setAttribute("y", (8 - r) * SQUARE_SIZE + 14);
+    lbl.setAttribute("fill", isLightLabel ? DARK_SQUARE : LIGHT_SQUARE);
+    lbl.classList.add("board-label");
+    lbl.textContent = r;
+    svg.appendChild(lbl);
+  }
+
+  // File labels (a–h along the bottom edge)
+  for (var fj = 0; fj < 8; fj++) {
+    var isLightFileLabel = (fj % 2 === 0);
+    var flbl = document.createElementNS(svgNS, "text");
+    flbl.setAttribute("x", fj * SQUARE_SIZE + SQUARE_SIZE - 10);
+    flbl.setAttribute("y", BOARD_SIZE - 3);
+    flbl.setAttribute("fill", isLightFileLabel ? DARK_SQUARE : LIGHT_SQUARE);
+    flbl.classList.add("board-label");
+    flbl.textContent = String.fromCharCode(97 + fj);
+    svg.appendChild(flbl);
+  }
+
+  container.appendChild(svg);
+  return { svg: svg, squareLookup: squareLookup };
+}
+
+function createPieceElement(pieceCode, square) {
+  var svgNS = "http://www.w3.org/2000/svg";
+  var g = document.createElementNS(svgNS, "g");
+  g.classList.add("piece");
+  g.dataset.square = square;
+
+  var text = document.createElementNS(svgNS, "text");
+  text.textContent = PIECE_UNICODE[pieceCode];
+  text.setAttribute("x", SQUARE_SIZE / 2);
+  text.setAttribute("y", Math.round(SQUARE_SIZE * 0.80));
+  text.setAttribute("text-anchor", "middle");
+  g.appendChild(text);
+
+  var coords = squareToCoords(square);
+  g.style.transform = "translate(" + coords.x + "px, " + coords.y + "px)";
+
+  return g;
+}
+
+function renderPosition(boardState, svg, pieceLookup) {
+  // Remove all existing piece elements from svg
+  var existing = svg.querySelectorAll(".piece");
+  for (var i = 0; i < existing.length; i++) {
+    existing[i].parentNode.removeChild(existing[i]);
+  }
+  pieceLookup.clear();
+
+  var squares = Object.keys(boardState);
+  for (var j = 0; j < squares.length; j++) {
+    var sq = squares[j];
+    var code = boardState[sq];
+    if (!code) continue;
+    var el = createPieceElement(code, sq);
+    svg.appendChild(el);
+    pieceLookup.set(sq, el);
+  }
+}
