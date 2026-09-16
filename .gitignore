@@ -1,0 +1,8 @@
+# Wrangler local state (account/project cache — machine-local, not source)
+.wrangler/
+
+# Deploy staging dir (created by the CI workflow)
+dist/
+
+# Node
+node_modules/

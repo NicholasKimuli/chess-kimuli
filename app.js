@@ -7,11 +7,28 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   // ── Select the opening ───────────────────────────────────────
-  var key = new URLSearchParams(window.location.search).get("o");
-  var opening = (typeof OPENINGS !== "undefined") ? OPENINGS[key] : null;
+  // Priority: baked-in key (generated route page) → ?o= → URL path
+  // (/{side}/{opening}/{variation}).
+  function resolveKey() {
+    if (window.OPENING_KEY) return window.OPENING_KEY;
+
+    var query = new URLSearchParams(window.location.search).get("o");
+    if (query) return query;
+
+    var route = window.location.pathname.replace(/^\/+|\/+$/g, "");
+    if (route) {
+      for (var k in OPENINGS) {
+        if (OPENINGS[k].route === route) return k;
+      }
+    }
+    return null;
+  }
+
+  var key = resolveKey();
+  var opening = (typeof OPENINGS !== "undefined" && key) ? OPENINGS[key] : null;
 
   if (!opening) {
-    window.location.replace("index.html");   // unknown / missing → picker
+    window.location.replace("/");   // unknown / missing → landing page
     return;
   }
 
@@ -24,6 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ── Header, badge and document metadata ──────────────────────
   document.getElementById("opening-name").textContent = opening.name;
   document.getElementById("opening-subtitle").textContent = opening.subtitle;
+
+  var backLink = document.getElementById("back-link");
+  if (backLink) {
+    backLink.href = "/" + opening.side + "/";
+    backLink.textContent = "← All " + (opening.side === "white" ? "White" : "Black") + " openings";
+  }
 
   var badge = document.getElementById("side-badge");
   badge.textContent = opening.side === "white" ? "♙ Playing as White" : "♟ Playing as Black";

@@ -19,6 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Build routes from openings.js
+        run: node build.js
+
       - name: Stage static site
         run: |
           mkdir -p dist

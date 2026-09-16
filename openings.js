@@ -1,11 +1,15 @@
 // openings.js — the opening registry for chess.kimuli.me
 //
 // OPENINGS[key] = {
-//   key        : string  — query-string id (?o=<key>)
+//   key        : string  — registry id
 //   side       : "white" | "black" — the side the lesson teaches
+//   opening    : string  — opening family slug   (URL segment 2)
+//   variation  : string  — variation slug        (URL segment 3)
+//   route      : string  — "<side>/<opening>/<variation>", the canonical URL
 //   name       : string  — opening name (header + <title>)
 //   subtitle   : string  — variation / guide subtitle
-//   line       : string  — headline SAN line (landing page card)
+//   line       : string  — headline SAN line
+//   blurb      : string  — one-paragraph pitch (side-list cards)
 //   intro      : string  — start-position copy (HTML allowed)
 //   boardFlip  : boolean — true → render from Black's perspective
 //   moves      : [ { ply, san, from, to, piece, capture, special, title, explanation } ]
@@ -24,9 +28,13 @@ const OPENINGS = {
   "italian": {
     key: "italian",
     side: "white",
+    opening: "italian",
+    variation: "giuoco-piano",
+    route: "white/italian/giuoco-piano",
     name: "Italian Game",
     subtitle: "Giuoco Piano — Step-by-Step Guide",
     line: "1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.c3 Nf6 5.d4 exd4 6.cxd4",
+    blurb: "White's oldest classical weapon. Build the two-pawn center, castle, then reroute the knight to g3 — strong center, active pieces, and real kingside chances.",
     intro: "Click <strong>Next</strong> to begin the lesson. White will play the Italian Game, one of the oldest and most respected openings in chess history, refined over five centuries of play.",
     boardFlip: false,
     moves: [
@@ -179,9 +187,13 @@ const OPENINGS = {
   "sicilian-najdorf": {
     key: "sicilian-najdorf",
     side: "black",
+    opening: "sicilian",
+    variation: "najdorf",
+    route: "black/sicilian/najdorf",
     name: "Sicilian Defence",
     subtitle: "Najdorf — Main Line",
     line: "1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 a6 6.Be3 e5",
+    blurb: "The highest-scoring answer to 1.e4, and Fischer's and Kasparov's weapon. Fight for the center from the wing, then race White's kingside attack with your own queenside storm.",
     intro: "Click <strong>Next</strong> to begin the lesson. Black will play the Sicilian Defence — the most ambitious answer to 1.e4 and the highest-scoring defence in the game. We follow the Najdorf, the most popular Sicilian in the world, in its modern main line.",
     boardFlip: true,
     moves: [
