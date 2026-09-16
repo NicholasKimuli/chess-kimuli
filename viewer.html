@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Opening — Chess Openings | chess.kimuli.me</title>
+  <meta id="page-description" name="description" content="Step-by-step chess opening guide.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="header-inner">
+        <a class="back-link" href="index.html">&#8592; All openings</a>
+        <h1 class="opening-name" id="opening-name">Loading…</h1>
+        <p class="opening-subtitle" id="opening-subtitle"></p>
+        <p class="side-badge" id="side-badge"></p>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="board-column">
+        <div id="board-container"></div>
+      </div>
+
+      <div class="info-column">
+        <div class="move-info-card">
+          <h2 id="move-title">Loading…</h2>
+          <p id="move-explanation"></p>
+        </div>
+
+        <div class="move-list-card">
+          <h3 class="moves-heading">Moves</h3>
+          <div id="move-list"></div>
+        </div>
+
+        <div class="controls">
+          <button id="prev-btn" class="btn btn-secondary" disabled>&#8592; Prev</button>
+          <span id="step-counter" class="step-counter">Start</span>
+          <button id="next-btn" class="btn btn-primary">Next &#8594;</button>
+        </div>
+
+        <p class="keyboard-hint">Tip: use ← → arrow keys to navigate</p>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <a href="https://kimuli.me">kimuli.me</a>
+    </footer>
+  </div>
+
+  <script src="openings.js"></script>
+  <script src="board.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

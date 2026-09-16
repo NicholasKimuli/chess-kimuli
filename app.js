@@ -1,6 +1,40 @@
-// app.js — wires board, moves, and UI controls
+// app.js — wires the selected opening to the board and UI controls
+//
+// The opening is chosen with ?o=<key> (see openings.js). Title, copy, board
+// orientation and move data all come from the registry, so adding an opening
+// is a data change only.
 
 document.addEventListener("DOMContentLoaded", function () {
+
+  // ── Select the opening ───────────────────────────────────────
+  var key = new URLSearchParams(window.location.search).get("o");
+  var opening = (typeof OPENINGS !== "undefined") ? OPENINGS[key] : null;
+
+  if (!opening) {
+    window.location.replace("index.html");   // unknown / missing → picker
+    return;
+  }
+
+  var MOVES = opening.moves;
+  var startTitle = opening.name + " — " + opening.subtitle.split(" — ")[0];
+
+  // Board orientation must be set before the board is built
+  BOARD_FLIP = !!opening.boardFlip;
+
+  // ── Header, badge and document metadata ──────────────────────
+  document.getElementById("opening-name").textContent = opening.name;
+  document.getElementById("opening-subtitle").textContent = opening.subtitle;
+
+  var badge = document.getElementById("side-badge");
+  badge.textContent = opening.side === "white" ? "♙ Playing as White" : "♟ Playing as Black";
+  badge.classList.add(opening.side === "white" ? "badge-white" : "badge-black");
+
+  document.title = opening.name + " — " + opening.subtitle + " | chess.kimuli.me";
+  var metaDesc = document.getElementById("page-description");
+  if (metaDesc) {
+    metaDesc.setAttribute("content",
+      opening.name + " (" + opening.subtitle + ") — a step-by-step chess opening guide, move by move.");
+  }
 
   // ── Board setup ──────────────────────────────────────────────
   var boardContainer = document.getElementById("board-container");
@@ -18,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Render starting position
   renderPosition(allBoardStates[0], svg, pieceLookup);
 
-  var stepIndex = -1; // -1 = starting position, 0..22 = after MOVES[stepIndex]
+  var stepIndex = -1; // -1 = starting position, 0..N-1 = after MOVES[stepIndex]
 
   // ── UI element refs ──────────────────────────────────────────
   var prevBtn        = document.getElementById("prev-btn");
@@ -64,8 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
       moveTitle.textContent       = MOVES[stepIndex].title;
       moveExplanation.innerHTML   = MOVES[stepIndex].explanation;
     } else {
-      moveTitle.textContent       = "Italian Game — Giuoco Piano";
-      moveExplanation.innerHTML   = "Click <strong>Next</strong> to begin the lesson. White will play the Italian Game, one of the oldest and most respected openings in chess history, refined over five centuries of play.";
+      moveTitle.textContent       = startTitle;
+      moveExplanation.innerHTML   = opening.intro;
     }
 
     // Move list highlighting

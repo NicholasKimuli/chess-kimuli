@@ -7,6 +7,11 @@ var MARGIN_BOTTOM = 22; // space below board for file labels
 var SVG_WIDTH  = BOARD_SIZE + MARGIN_LEFT;
 var SVG_HEIGHT = BOARD_SIZE + MARGIN_BOTTOM;
 
+// Orientation: false = White at the bottom (rank 1 on the last row);
+// true = flipped, i.e. Black at the bottom (black repertoire view).
+// Set this BEFORE createBoard() is called.
+var BOARD_FLIP = false;
+
 var PIECE_UNICODE = {
   wK: "♔", wQ: "♕", wR: "♖", wB: "♗", wN: "♘", wP: "♙",
   bK: "♚", bQ: "♛", bR: "♜", bB: "♝", bN: "♞", bP: "♟"
@@ -20,9 +25,11 @@ var HIGHLIGHT_TO   = "#aaa23a";
 function squareToCoords(square) {
   var file = square.charCodeAt(0) - 97; // a=0, h=7
   var rank = parseInt(square[1], 10);   // 1–8
+  var col = BOARD_FLIP ? 7 - file : file;
+  var row = BOARD_FLIP ? rank - 1 : 8 - rank; // 0 = top row of the SVG
   return {
-    x: MARGIN_LEFT + file * SQUARE_SIZE,
-    y: (8 - rank) * SQUARE_SIZE        // rank 8 → y=0, rank 1 → y=420
+    x: MARGIN_LEFT + col * SQUARE_SIZE,
+    y: row * SQUARE_SIZE
   };
 }
 
@@ -50,6 +57,12 @@ function applyStep(step, boardState) {
     } else {
       state["f8"] = state["h8"]; delete state["h8"];
     }
+  } else if (step.special === "castle-queenside") {
+    if (step.piece === "wK") {
+      state["d1"] = state["a1"]; delete state["a1"];
+    } else {
+      state["d8"] = state["a8"]; delete state["a8"];
+    }
   }
 
   return state;
@@ -70,8 +83,9 @@ function createBoard(container) {
     for (var fi = 0; fi < 8; fi++) {
       var file = String.fromCharCode(97 + fi);
       var squareName = file + rank;
-      var x = MARGIN_LEFT + fi * SQUARE_SIZE;
-      var y = (8 - rank) * SQUARE_SIZE;
+      var coords = squareToCoords(squareName);
+      var x = coords.x;
+      var y = coords.y;
       var isLight = (rank + fi) % 2 === 0;
 
       var rect = document.createElementNS(svgNS, "rect");
@@ -92,7 +106,8 @@ function createBoard(container) {
   for (var r = 8; r >= 1; r--) {
     var lbl = document.createElementNS(svgNS, "text");
     lbl.setAttribute("x", MARGIN_LEFT - 5);
-    lbl.setAttribute("y", (8 - r) * SQUARE_SIZE + SQUARE_SIZE * 0.65);
+    var rankRow = BOARD_FLIP ? r - 1 : 8 - r;
+    lbl.setAttribute("y", rankRow * SQUARE_SIZE + SQUARE_SIZE * 0.65);
     lbl.setAttribute("text-anchor", "end");
     lbl.setAttribute("fill", "#c8b890");
     lbl.classList.add("board-label");
@@ -103,7 +118,8 @@ function createBoard(container) {
   // File labels (A–H) — below the board in the margin
   for (var fj = 0; fj < 8; fj++) {
     var flbl = document.createElementNS(svgNS, "text");
-    flbl.setAttribute("x", MARGIN_LEFT + fj * SQUARE_SIZE + SQUARE_SIZE / 2);
+    var fileCol = BOARD_FLIP ? 7 - fj : fj;
+    flbl.setAttribute("x", MARGIN_LEFT + fileCol * SQUARE_SIZE + SQUARE_SIZE / 2);
     flbl.setAttribute("y", BOARD_SIZE + MARGIN_BOTTOM - 4);
     flbl.setAttribute("text-anchor", "middle");
     flbl.setAttribute("fill", "#c8b890");
@@ -183,6 +199,12 @@ function animateStep(step, pieceLookup, svg) {
       _movePieceInDom("h1", "f1", pieceLookup);
     } else {
       _movePieceInDom("h8", "f8", pieceLookup);
+    }
+  } else if (step.special === "castle-queenside") {
+    if (step.piece === "wK") {
+      _movePieceInDom("a1", "d1", pieceLookup);
+    } else {
+      _movePieceInDom("a8", "d8", pieceLookup);
     }
   }
 }
