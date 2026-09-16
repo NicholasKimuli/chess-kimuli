@@ -68,7 +68,7 @@ function createBoard(container) {
       var squareName = file + rank;
       var x = fi * SQUARE_SIZE;
       var y = (8 - rank) * SQUARE_SIZE;
-      var isLight = (rank + fi) % 2 !== 0;
+      var isLight = (rank + fi) % 2 === 0;
 
       var rect = document.createElementNS(svgNS, "rect");
       rect.setAttribute("x", x);
@@ -187,7 +187,7 @@ function highlightSquares(fromSq, toSq, squareLookup) {
   squareLookup.forEach(function(rect, sq) {
     var fi = sq.charCodeAt(0) - 97;
     var rk = parseInt(sq[1], 10);
-    var isLight = (rk + fi) % 2 !== 0;
+    var isLight = (rk + fi) % 2 === 0;
     rect.style.fill = isLight ? LIGHT_SQUARE : DARK_SQUARE;
   });
   if (fromSq && squareLookup.has(fromSq)) {
