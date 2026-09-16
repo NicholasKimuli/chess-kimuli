@@ -100,7 +100,7 @@ function createBoard(container) {
     svg.appendChild(lbl);
   }
 
-  // File labels (a–h) — below the board in the margin
+  // File labels (A–H) — below the board in the margin
   for (var fj = 0; fj < 8; fj++) {
     var flbl = document.createElementNS(svgNS, "text");
     flbl.setAttribute("x", MARGIN_LEFT + fj * SQUARE_SIZE + SQUARE_SIZE / 2);
@@ -108,7 +108,7 @@ function createBoard(container) {
     flbl.setAttribute("text-anchor", "middle");
     flbl.setAttribute("fill", "#c8b890");
     flbl.classList.add("board-label");
-    flbl.textContent = String.fromCharCode(97 + fj);
+    flbl.textContent = String.fromCharCode(65 + fj); // uppercase A–H
     svg.appendChild(flbl);
   }
 
