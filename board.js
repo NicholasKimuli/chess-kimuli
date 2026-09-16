@@ -2,10 +2,6 @@
 
 var SQUARE_SIZE = 60;
 var BOARD_SIZE = SQUARE_SIZE * 8; // 480
-var MARGIN_LEFT   = 22; // space left of board for rank labels
-var MARGIN_BOTTOM = 22; // space below board for file labels
-var SVG_WIDTH  = BOARD_SIZE + MARGIN_LEFT;
-var SVG_HEIGHT = BOARD_SIZE + MARGIN_BOTTOM;
 
 var PIECE_UNICODE = {
   wK: "♔", wQ: "♕", wR: "♖", wB: "♗", wN: "♘", wP: "♙",
@@ -21,7 +17,7 @@ function squareToCoords(square) {
   var file = square.charCodeAt(0) - 97; // a=0, h=7
   var rank = parseInt(square[1], 10);   // 1–8
   return {
-    x: MARGIN_LEFT + file * SQUARE_SIZE,
+    x: file * SQUARE_SIZE,
     y: (8 - rank) * SQUARE_SIZE        // rank 8 → y=0, rank 1 → y=420
   };
 }
@@ -58,7 +54,7 @@ function applyStep(step, boardState) {
 function createBoard(container) {
   var svgNS = "http://www.w3.org/2000/svg";
   var svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("viewBox", "0 0 " + SVG_WIDTH + " " + SVG_HEIGHT);
+  svg.setAttribute("viewBox", "0 0 " + BOARD_SIZE + " " + BOARD_SIZE);
   svg.setAttribute("width", "100%");
   svg.style.display = "block";
   svg.id = "chess-svg";
@@ -70,7 +66,7 @@ function createBoard(container) {
     for (var fi = 0; fi < 8; fi++) {
       var file = String.fromCharCode(97 + fi);
       var squareName = file + rank;
-      var x = MARGIN_LEFT + fi * SQUARE_SIZE;
+      var x = fi * SQUARE_SIZE;
       var y = (8 - rank) * SQUARE_SIZE;
       var isLight = (rank + fi) % 2 === 0;
 
@@ -88,25 +84,28 @@ function createBoard(container) {
     }
   }
 
-  // Rank labels (1–8) — left of the board in the margin
+  // Corner labels — rank numbers on left edge, file letters on bottom edge
+  // Placed inside each border square, contrasting with square colour (Lichess style)
   for (var r = 8; r >= 1; r--) {
-    var lbl = document.createElementNS(svgNS, "text");
-    lbl.setAttribute("x", MARGIN_LEFT - 5);
-    lbl.setAttribute("y", (8 - r) * SQUARE_SIZE + SQUARE_SIZE * 0.65);
-    lbl.setAttribute("text-anchor", "end");
-    lbl.setAttribute("fill", "#c8b890");
-    lbl.classList.add("board-label");
-    lbl.textContent = r;
-    svg.appendChild(lbl);
+    // Rank number: top-left corner of the a-file square for this rank
+    var isLightRank = (r % 2 === 0); // a1 is dark (fi=0,rk=1 → 1%2≠0 → dark → light text)
+    var rlbl = document.createElementNS(svgNS, "text");
+    rlbl.setAttribute("x", 3);
+    rlbl.setAttribute("y", (8 - r) * SQUARE_SIZE + 15);
+    rlbl.setAttribute("fill", isLightRank ? DARK_SQUARE : LIGHT_SQUARE);
+    rlbl.classList.add("board-label");
+    rlbl.textContent = r;
+    svg.appendChild(rlbl);
   }
 
-  // File labels (a–h) — below the board in the margin
   for (var fj = 0; fj < 8; fj++) {
+    // File letter: bottom-right corner of the rank-1 square for this file
+    var isLightFile = (fj % 2 !== 0); // a1 is dark (fi=0 → even → dark → light text; b1 fi=1 → odd → light → dark text)
     var flbl = document.createElementNS(svgNS, "text");
-    flbl.setAttribute("x", MARGIN_LEFT + fj * SQUARE_SIZE + SQUARE_SIZE / 2);
-    flbl.setAttribute("y", BOARD_SIZE + MARGIN_BOTTOM - 4);
-    flbl.setAttribute("text-anchor", "middle");
-    flbl.setAttribute("fill", "#c8b890");
+    flbl.setAttribute("x", fj * SQUARE_SIZE + SQUARE_SIZE - 3);
+    flbl.setAttribute("y", BOARD_SIZE - 3);
+    flbl.setAttribute("text-anchor", "end");
+    flbl.setAttribute("fill", isLightFile ? DARK_SQUARE : LIGHT_SQUARE);
     flbl.classList.add("board-label");
     flbl.textContent = String.fromCharCode(97 + fj);
     svg.appendChild(flbl);
