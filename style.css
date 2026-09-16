@@ -1,1 +1,19 @@
-/* styles — Task 5 */
+/* Piece animation */
+.piece {
+  transition: transform 300ms ease;
+  cursor: default;
+  pointer-events: none;
+}
+
+.piece text {
+  font-size: 50px;
+  user-select: none;
+}
+
+/* Board labels */
+.board-label {
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 600;
+  pointer-events: none;
+}

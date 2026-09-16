@@ -149,3 +149,51 @@ function renderPosition(boardState, svg, pieceLookup) {
     pieceLookup.set(sq, el);
   }
 }
+
+function _movePieceInDom(fromSquare, toSquare, pieceLookup) {
+  var el = pieceLookup.get(fromSquare);
+  if (!el) return;
+  var coords = squareToCoords(toSquare);
+  el.style.transform = "translate(" + coords.x + "px, " + coords.y + "px)";
+  el.dataset.square = toSquare;
+  pieceLookup.delete(fromSquare);
+  pieceLookup.set(toSquare, el);
+}
+
+function animateStep(step, pieceLookup, svg) {
+  // Remove captured piece before moving piece arrives
+  if (step.capture) {
+    var captured = pieceLookup.get(step.to);
+    if (captured && captured.parentNode) {
+      captured.parentNode.removeChild(captured);
+    }
+    pieceLookup.delete(step.to);
+  }
+
+  // Animate the main piece
+  _movePieceInDom(step.from, step.to, pieceLookup);
+
+  // Handle castling: animate rook too
+  if (step.special === "castle-kingside") {
+    if (step.piece === "wK") {
+      _movePieceInDom("h1", "f1", pieceLookup);
+    } else {
+      _movePieceInDom("h8", "f8", pieceLookup);
+    }
+  }
+}
+
+function highlightSquares(fromSq, toSq, squareLookup) {
+  squareLookup.forEach(function(rect, sq) {
+    var fi = sq.charCodeAt(0) - 97;
+    var rk = parseInt(sq[1], 10);
+    var isLight = (rk + fi) % 2 !== 0;
+    rect.style.fill = isLight ? LIGHT_SQUARE : DARK_SQUARE;
+  });
+  if (fromSq && squareLookup.has(fromSq)) {
+    squareLookup.get(fromSq).style.fill = HIGHLIGHT_FROM;
+  }
+  if (toSq && squareLookup.has(toSq)) {
+    squareLookup.get(toSq).style.fill = HIGHLIGHT_TO;
+  }
+}
