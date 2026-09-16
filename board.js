@@ -2,6 +2,10 @@
 
 var SQUARE_SIZE = 60;
 var BOARD_SIZE = SQUARE_SIZE * 8; // 480
+var MARGIN_LEFT   = 22; // space left of board for rank labels
+var MARGIN_BOTTOM = 22; // space below board for file labels
+var SVG_WIDTH  = BOARD_SIZE + MARGIN_LEFT;
+var SVG_HEIGHT = BOARD_SIZE + MARGIN_BOTTOM;
 
 var PIECE_UNICODE = {
   wK: "♔", wQ: "♕", wR: "♖", wB: "♗", wN: "♘", wP: "♙",
@@ -17,7 +21,7 @@ function squareToCoords(square) {
   var file = square.charCodeAt(0) - 97; // a=0, h=7
   var rank = parseInt(square[1], 10);   // 1–8
   return {
-    x: file * SQUARE_SIZE,
+    x: MARGIN_LEFT + file * SQUARE_SIZE,
     y: (8 - rank) * SQUARE_SIZE        // rank 8 → y=0, rank 1 → y=420
   };
 }
@@ -54,7 +58,7 @@ function applyStep(step, boardState) {
 function createBoard(container) {
   var svgNS = "http://www.w3.org/2000/svg";
   var svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("viewBox", "0 0 " + BOARD_SIZE + " " + BOARD_SIZE);
+  svg.setAttribute("viewBox", "0 0 " + SVG_WIDTH + " " + SVG_HEIGHT);
   svg.setAttribute("width", "100%");
   svg.style.display = "block";
   svg.id = "chess-svg";
@@ -66,7 +70,7 @@ function createBoard(container) {
     for (var fi = 0; fi < 8; fi++) {
       var file = String.fromCharCode(97 + fi);
       var squareName = file + rank;
-      var x = fi * SQUARE_SIZE;
+      var x = MARGIN_LEFT + fi * SQUARE_SIZE;
       var y = (8 - rank) * SQUARE_SIZE;
       var isLight = (rank + fi) % 2 === 0;
 
@@ -84,25 +88,25 @@ function createBoard(container) {
     }
   }
 
-  // Rank labels (1–8 on the left edge of each row)
+  // Rank labels (1–8) — left of the board in the margin
   for (var r = 8; r >= 1; r--) {
-    var isLightLabel = (r % 2 !== 0); // alternates
     var lbl = document.createElementNS(svgNS, "text");
-    lbl.setAttribute("x", 3);
-    lbl.setAttribute("y", (8 - r) * SQUARE_SIZE + 14);
-    lbl.setAttribute("fill", isLightLabel ? DARK_SQUARE : LIGHT_SQUARE);
+    lbl.setAttribute("x", MARGIN_LEFT - 5);
+    lbl.setAttribute("y", (8 - r) * SQUARE_SIZE + SQUARE_SIZE * 0.65);
+    lbl.setAttribute("text-anchor", "end");
+    lbl.setAttribute("fill", "#c8b890");
     lbl.classList.add("board-label");
     lbl.textContent = r;
     svg.appendChild(lbl);
   }
 
-  // File labels (a–h along the bottom edge)
+  // File labels (a–h) — below the board in the margin
   for (var fj = 0; fj < 8; fj++) {
-    var isLightFileLabel = (fj % 2 === 0);
     var flbl = document.createElementNS(svgNS, "text");
-    flbl.setAttribute("x", fj * SQUARE_SIZE + SQUARE_SIZE - 10);
-    flbl.setAttribute("y", BOARD_SIZE - 3);
-    flbl.setAttribute("fill", isLightFileLabel ? DARK_SQUARE : LIGHT_SQUARE);
+    flbl.setAttribute("x", MARGIN_LEFT + fj * SQUARE_SIZE + SQUARE_SIZE / 2);
+    flbl.setAttribute("y", BOARD_SIZE + MARGIN_BOTTOM - 4);
+    flbl.setAttribute("text-anchor", "middle");
+    flbl.setAttribute("fill", "#c8b890");
     flbl.classList.add("board-label");
     flbl.textContent = String.fromCharCode(97 + fj);
     svg.appendChild(flbl);
