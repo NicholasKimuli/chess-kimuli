@@ -34,6 +34,7 @@ Live lessons:
 | `board.js` | SVG board renderer: positions, animation, highlights, orientation (`BOARD_FLIP`), castling. |
 | `style.css` | All styling, including the landing/side-list cards. |
 | `index.html` | Landing page. |
+| `404.html` | Not-found page. **Required** — without it Pages serves the landing page with a `200` for every unknown URL (soft 404s). |
 | `build.js` | Generates `/white/`, `/black/`, the lesson routes, `sitemap.xml`, `robots.txt`. |
 | `tools/validate.js` | Data validator. CI runs it before anything is built or deployed. |
 | `.github/workflows/deploy.yml` | validate → build → deploy on every push to `main`. |
@@ -150,6 +151,9 @@ this catches it before deployment instead of in the browser.
   rotated, update the secret or deploys will fail).
 - Cloudflare Pages canonicalises `.html` URLs: `/viewer.html` 308-redirects to `/viewer`
   (query strings survive). The generated routes don't rely on this.
+- **NotFound handling:** Pages serves the root `404.html` for unmatched paths. Keep that file —
+  removing it makes every typo'd URL return the landing page with a `200` (soft 404: search
+  engines index junk, broken links look healthy).
 
 ## Conventions & pitfalls
 

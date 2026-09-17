@@ -261,6 +261,15 @@ body {
   letter-spacing: 0.3px;
 }
 
+.hero-kicker {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #f0c060;
+  margin-bottom: 10px;
+}
+
 .openings-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
