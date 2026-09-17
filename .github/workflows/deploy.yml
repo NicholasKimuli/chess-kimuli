@@ -19,6 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Validate opening data
+        run: node tools/validate.js
+
       - name: Build routes from openings.js
         run: node build.js
 
@@ -26,7 +29,9 @@ jobs:
         run: |
           mkdir -p dist
           rsync -a --exclude '.git' --exclude '.github' --exclude '.wrangler' \
-            --exclude 'node_modules' --exclude 'dist' ./ dist/
+            --exclude 'node_modules' --exclude 'dist' \
+            --exclude 'tools' --exclude 'build.js' --exclude 'README.md' \
+            --exclude '.gitignore' ./ dist/
           echo "Staged files:"
           ls -la dist/
 
