@@ -36,6 +36,79 @@ const notes = [];
 
 const fail = (where, msg) => errors.push(`${where}: ${msg}`);
 
+// ── legal-move geometry ──────────────────────────────────────────────────────
+const FILES = "abcdefgh";
+const fileOf = sq => FILES.indexOf(sq[0]);
+const rankOf = sq => Number(sq[1]);
+const typeOf = code => code[1];
+const colorOf = code => code[0];
+
+function pathClear(from, to, st) {
+  const df = Math.sign(fileOf(to) - fileOf(from));
+  const dr = Math.sign(rankOf(to) - rankOf(from));
+  let f = fileOf(from) + df, r = rankOf(from) + dr;
+  while (f !== fileOf(to) || r !== rankOf(to)) {
+    if (st[FILES[f] + r]) return false;
+    f += df; r += dr;
+  }
+  return true;
+}
+
+// Is the move geometrically possible for this piece (ignoring pins/checks)?
+function geometryOk(m, st) {
+  const df = fileOf(m.to) - fileOf(m.from);
+  const dr = rankOf(m.to) - rankOf(m.from);
+  const adf = Math.abs(df), adr = Math.abs(dr);
+  const type = typeOf(m.piece);
+  const forward = colorOf(m.piece) === "w" ? 1 : -1;
+
+  switch (type) {
+    case "N":
+      return (adf === 1 && adr === 2) || (adf === 2 && adr === 1);
+    case "B":
+      return adf === adr && adf > 0 && pathClear(m.from, m.to, st);
+    case "R":
+      return (adf === 0) !== (adr === 0) && pathClear(m.from, m.to, st);
+    case "Q":
+      return ((adf === adr && adf > 0) || (adf === 0) !== (adr === 0)) && pathClear(m.from, m.to, st);
+    case "K":
+      return adf <= 1 && adr <= 1 && adf + adr > 0;
+    case "P": {
+      if (df === 0) {
+        if (dr === forward) return !st[m.to];
+        if (dr === 2 * forward) {
+          const startRank = forward === 1 ? 2 : 7;
+          const mid = FILES[fileOf(m.from)] + (rankOf(m.from) + forward);
+          return rankOf(m.from) === startRank && !st[mid] && !st[m.to];
+        }
+        return false;
+      }
+      return adf === 1 && dr === forward;   // diagonal: only as a capture (checked separately)
+    }
+    default:
+      return false;
+  }
+}
+
+// Castling: right rook, squares between empty, king on its home square.
+function castleError(m, st) {
+  const white = colorOf(m.piece) === "w";
+  const rank = white ? "1" : "8";
+  const king = (white ? "w" : "b") + "K";
+  const rook = (white ? "w" : "b") + "R";
+  if (st["e" + rank] !== king) return `castling with the king not on e${rank}`;
+  if (m.special === "castle-kingside") {
+    if (m.to !== "g" + rank) return `kingside castling must end on g${rank}`;
+    if (st["h" + rank] !== rook) return `no rook on h${rank} to castle with`;
+    for (const f of ["f", "g"]) if (st[f + rank]) return `${f}${rank} is occupied`;
+  } else if (m.special === "castle-queenside") {
+    if (m.to !== "c" + rank) return `queenside castling must end on c${rank}`;
+    if (st["a" + rank] !== rook) return `no rook on a${rank} to castle with`;
+    for (const f of ["b", "c", "d"]) if (st[f + rank]) return `${f}${rank} is occupied`;
+  }
+  return null;
+}
+
 function checkMove(where, m, i, st) {
   if (m.ply !== i + 1) fail(where, `ply is ${m.ply}, expected ${i + 1}`);
 
@@ -56,6 +129,22 @@ function checkMove(where, m, i, st) {
   }
   if (!m.capture && st[m.to]) {
     fail(where, `move ${m.ply} (${m.san}): ${m.to} is occupied by ${st[m.to]} but capture is null`);
+  }
+  if (m.capture && colorOf(m.capture) === colorOf(m.piece)) {
+    fail(where, `move ${m.ply} (${m.san}): capture target ${m.capture} is the same colour as ${m.piece}`);
+  }
+
+  // geometry / castling legality
+  if (onFrom === m.piece) {
+    if (m.special) {
+      const ce = castleError(m, st);
+      if (ce) fail(where, `move ${m.ply} (${m.san}): ${ce}`);
+    } else if (!geometryOk(m, st)) {
+      fail(where, `move ${m.ply} (${m.san}): ${m.piece} at ${m.from} cannot legally move to ${m.to}`);
+    }
+    if (typeOf(m.piece) === "P" && fileOf(m.from) !== fileOf(m.to) && !m.capture) {
+      fail(where, `move ${m.ply} (${m.san}): pawn moves diagonally to ${m.to} but nothing is captured`);
+    }
   }
 
   const san = String(m.san || "");

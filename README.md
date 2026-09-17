@@ -23,6 +23,7 @@ Live lessons:
 
 - `/white/italian/giuoco-piano/` — Italian Game, Giuoco Piano (White)
 - `/black/sicilian/najdorf/` — Sicilian Defence, Najdorf main line (Black)
+- `/black/nimzo-indian/rubinstein/` — Nimzo-Indian, Rubinstein main line (Black)
 
 ## Repository layout
 
@@ -131,9 +132,13 @@ git push            # CI validates, builds, deploys — live in ~30s
 - `route` ≠ `side/opening/variation`, duplicate routes, `key` mismatch
 - a `ply` out of sequence
 - a move whose `piece` isn't actually on its `from` square
-- `capture` set without an `x` in the SAN (or vice versa)
+- **a move that piece cannot legally make** — wrong knight geometry, a blocked
+  bishop/rook/queen path, a pawn moving backwards or two squares from the wrong
+  rank, a pawn moving diagonally onto an empty square
+- `capture` set without an `x` in the SAN (or vice versa), capturing your own piece
 - a piece landing on an occupied square without `capture`
-- castling without the right `special` (or a `special` on a non-castling move)
+- castling without the right `special`, with the king off e1/e8, with no rook on
+  the corner, or with pieces between king and rook
 - the headline `line` disagreeing with the lesson's first moves
 - a lesson that doesn't end with exactly two kings on the board
 

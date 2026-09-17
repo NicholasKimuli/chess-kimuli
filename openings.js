@@ -330,5 +330,144 @@ const OPENINGS = {
         explanation: "This is the Najdorf's essence: while White attacks your king, you attack his. The move …b5–b4 will chase the c3-knight away, open lines against White's king on c1, and hand Black a pawn storm of his own. From here the game is razor-sharp — and Black's active pieces fully compensate for White's play on the kingside."
       }
     ]
+  },
+
+  // ── Black vs 1.d4: Nimzo-Indian (Rubinstein, main line) ───────────────────
+  // 1.d4 Nf6 2.c4 e6 3.Nc3 Bb4 4.e3 O-O 5.Bd3 d5 6.Nf3 c5 7.O-O Nc6
+  // 8.a3 Bxc3 9.bxc3 dxc4 10.Bxc4 Qc7 — ECO E59, Wikipedia's "Main Variation".
+  "nimzo-rubinstein": {
+    key: "nimzo-rubinstein",
+    side: "black",
+    opening: "nimzo-indian",
+    variation: "rubinstein",
+    route: "black/nimzo-indian/rubinstein",
+    name: "Nimzo-Indian Defence",
+    subtitle: "Rubinstein — Main Line",
+    line: "1.d4 Nf6 2.c4 e6 3.Nc3 Bb4 4.e3 O-O 5.Bd3 d5 6.Nf3 c5 7.O-O Nc6 8.a3 Bxc3 9.bxc3 dxc4 10.Bxc4 Qc7",
+    blurb: "Black's most popular and most respected answer to 1.d4 — and the natural partner for the Najdorf. Pin the knight, trade bishop for structure, then spend the middlegame squeezing the doubled c-pawns.",
+    intro: "Click <strong>Next</strong> to begin the lesson. Black will play the Nimzo-Indian, the defence every world champion since Capablanca has used. We follow the <strong>Rubinstein System</strong> (4.e3) into its main line — the classic position thousands of master games have reached.",
+    boardFlip: true,
+    moves: [
+      {
+        ply: 1, san: "d4", from: "d2", to: "d4", piece: "wP",
+        capture: null, special: null,
+        title: "1. d4 — White Takes the Center",
+        explanation: "White occupies the center and opens the c1-bishop's diagonal. Against 1.d4 you are choosing a whole middlegame structure, not just a move — so let's pick one that gives you real winning chances."
+      },
+      {
+        ply: 2, san: "Nf6", from: "g8", to: "f6", piece: "bN",
+        capture: null, special: null,
+        title: "1… Nf6 — The Indian Move Order",
+        explanation: "Black develops a piece and controls e4 without committing a single pawn to the center. From here …e6, …g6, …d5 and …b6 all remain available — maximum flexibility, which is the entire point of the Indian defences."
+      },
+      {
+        ply: 3, san: "c4", from: "c2", to: "c4", piece: "wP",
+        capture: null, special: null,
+        title: "2. c4 — The Queen's Gambit Move Order",
+        explanation: "White adds a second pawn to the center and prepares to meet …d5 with cxd5. It is White's most popular continuation — and it commits him to defending a wide, broad center."
+      },
+      {
+        ply: 4, san: "e6", from: "e7", to: "e6", piece: "bP",
+        capture: null, special: null,
+        title: "2… e6 — Keep Every Option Open",
+        explanation: "A quiet move with a big purpose: it opens the path for the f8-bishop to b4 while keeping …d5 in reserve. Black still refuses to name the structure — that choice is the source of the Nimzo's strength."
+      },
+      {
+        ply: 5, san: "Nc3", from: "b1", to: "c3", piece: "wN",
+        capture: null, special: null,
+        title: "3. Nc3 — White Shows His Hand",
+        explanation: "White develops and supports his center. He gets a useful square — but the knight on c3 is now a target, and Black has been waiting for exactly this move."
+      },
+      {
+        ply: 6, san: "Bb4", from: "f8", to: "b4", piece: "bB",
+        capture: null, special: null,
+        title: "3… Bb4 — The Nimzo-Indian Pin",
+        explanation: "The move that defines the opening. The bishop pins the c3-knight and indirectly prevents e4, so White can never build the big mobile center he is aiming for. Black is offering to give up this bishop for the knight — in exchange for doubled pawns on White's side of the board."
+      },
+      {
+        ply: 7, san: "e3", from: "e2", to: "e3", piece: "wP",
+        capture: null, special: null,
+        title: "4. e3 — The Rubinstein",
+        explanation: "White's most common answer: solid, flexible, and it keeps the pawn chain healthy. He plans Bd3 and Nge2, so a future …Bxc3 can be answered by Nxc3 — recapturing with a piece and avoiding doubled pawns."
+      },
+      {
+        ply: 8, san: "O-O", from: "e8", to: "g8", piece: "bK",
+        capture: null, special: "castle-kingside",
+        title: "4… O-O — Safety Before Strategy",
+        explanation: "Black castles first and only then decides where the pawns go. 4…O-O is the most flexible and most frequently played reply in the Rubinstein System."
+      },
+      {
+        ply: 9, san: "Bd3", from: "f1", to: "d3", piece: "wB",
+        capture: null, special: null,
+        title: "5. Bd3 — Aiming at h7",
+        explanation: "Development with a purpose: the bishop points at h7, and White starts preparing the e3–e4 break — his main plan in this structure."
+      },
+      {
+        ply: 10, san: "d5", from: "d7", to: "d5", piece: "bP",
+        capture: null, special: null,
+        title: "5… d5 — The Central Claim",
+        explanation: "Black takes his share of the center and opens the d-file for the queen. Compare this with a normal Queen's Gambit: here the pin on c3 keeps White tied down, which is exactly why this tabiya is so popular for Black."
+      },
+      {
+        ply: 11, san: "Nf3", from: "g1", to: "f3", piece: "wN",
+        capture: null, special: null,
+        title: "6. Nf3 — Finishing Development",
+        explanation: "White develops, covers e5 and prepares to castle. He wants to be fully mobilized before Black breaks in the center with …c5."
+      },
+      {
+        ply: 12, san: "c5", from: "c7", to: "c5", piece: "bP",
+        capture: null, special: null,
+        title: "6… c5 — The Thematic Break",
+        explanation: "The Nimzo-Indian's signature. Black hits d4 immediately, while White's king is still in the center — and opening the position suits the side with fewer space problems to defend."
+      },
+      {
+        ply: 13, san: "O-O", from: "e1", to: "g1", piece: "wK",
+        capture: null, special: "castle-kingside",
+        title: "7. O-O — White Castles",
+        explanation: "Both kings are safe, and the real fight begins. White will try to make his bishop pair and central space count; Black will work on the queenside against the pawn left on c4."
+      },
+      {
+        ply: 14, san: "Nc6", from: "b8", to: "c6", piece: "bN",
+        capture: null, special: null,
+        title: "7… Nc6 — More Pressure on d4",
+        explanation: "A natural developing move that adds a second attacker to d4. The knight also keeps one eye on a5, from where it can later hit the c4-pawn."
+      },
+      {
+        ply: 15, san: "a3", from: "a2", to: "a3", piece: "wP",
+        capture: null, special: null,
+        title: "8. a3 — Questioning the Bishop",
+        explanation: "The main line. White forces the bishop to declare itself: retreating would hand White the bishop pair for nothing, so Black must decide now whether the trade is worth it."
+      },
+      {
+        ply: 16, san: "Bxc3", from: "b4", to: "c3", piece: "bB",
+        capture: "wN", special: null,
+        title: "8… Bxc3 — Bishop for Structure",
+        explanation: "The heart of the whole opening. Black gives up the bishop pair to saddle White with doubled c-pawns — a permanent, immobile target he will attack for the rest of the game. This strategic trade is the entire idea of the Nimzo-Indian."
+      },
+      {
+        ply: 17, san: "bxc3", from: "b2", to: "c3", piece: "wP",
+        capture: "bB", special: null,
+        title: "9. bxc3 — The Doubled Pawns Appear",
+        explanation: "White recaptures with the b-pawn. In return he gets the two bishops and a strong central mass — but the c3- and c4-pawns are now long-term targets, and his b-file is only half-open."
+      },
+      {
+        ply: 18, san: "dxc4", from: "d5", to: "c4", piece: "bP",
+        capture: "wP", special: null,
+        title: "9… dxc4 — Clarifying the Center",
+        explanation: "Black removes the c4-pawn before White can defend it. After the recapture the position clarifies: Black's pawns on c5 and e6 form a solid barrier — the standard compensation for having traded the dark-squared bishop."
+      },
+      {
+        ply: 19, san: "Bxc4", from: "d3", to: "c4", piece: "wB",
+        capture: "bP", special: null,
+        title: "10. Bxc4 — Recapturing with the Bishop",
+        explanation: "White regains the pawn and the bishop takes a long, active diagonal toward f7. The position looks pleasant for White — but the weakness on c3 is permanent, while Black's pieces are about to find ideal squares."
+      },
+      {
+        ply: 20, san: "Qc7", from: "d8", to: "c7", piece: "bQ",
+        capture: null, special: null,
+        title: "10… Qc7 — The Rubinstein Tabiya",
+        explanation: "This is the classic position, a genuine crossroads of opening theory. Black's plans from here: …b6 and …Bb7 to develop and aim at the doubled pawns along the long diagonal; …Na5 or …Ba6 to hit c4; …e5 to fix the center; and …cxd4 at the right moment to leave White with an isolated pawn on d4. White has the bishop pair and must prove it — every one of your pieces already has a clear job."
+      }
+    ]
   }
 };
