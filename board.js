@@ -14,7 +14,10 @@ var BOARD_FLIP = false;
 
 var PIECE_UNICODE = {
   wK: "♔", wQ: "♕", wR: "♖", wB: "♗", wN: "♘", wP: "♙",
-  bK: "♚", bQ: "♛", bR: "♜", bB: "♝", bN: "♞", bP: "♟"
+  // NB: bP is the only chess glyph with the Unicode Emoji property — iOS
+  // renders it as a colour emoji unless the text-presentation selector
+  // (U+FE0E) is appended, which is why it is spelled out here.
+  bK: "♚", bQ: "♛", bR: "♜", bB: "♝", bN: "♞", bP: "\u265F\uFE0E"
 };
 
 var LIGHT_SQUARE = "#f0d9b5";

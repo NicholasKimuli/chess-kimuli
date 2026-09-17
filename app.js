@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var badge = document.getElementById("side-badge");
-  badge.textContent = opening.side === "white" ? "♙ Playing as White" : "♟ Playing as Black";
+  badge.textContent = opening.side === "white" ? "♙ Playing as White" : "\u265F\uFE0E Playing as Black";
   badge.classList.add(opening.side === "white" ? "badge-white" : "badge-black");
 
   document.title = opening.name + " — " + opening.subtitle + " | chess.kimuli.me";

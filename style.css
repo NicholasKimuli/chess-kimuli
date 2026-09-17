@@ -387,3 +387,25 @@ body {
   .landing-hero { padding: 40px 0 28px; }
   .hero-title { font-size: 2rem; }
 }
+
+/* ── Chess glyph font ─────────────────────────────────────────────
+   U+265F (black pawn) is the ONLY chess piece Unicode flags as Emoji,
+   so iOS renders it from Apple Color Emoji — a glossy 3D pawn — while
+   the other eleven pieces stay flat. The board then looks mismatched.
+   Self-hosting a 3 KB subset of the twelve glyphs (DejaVu Sans, free
+   licence in fonts/LICENSE.txt) fixes it for good: a font-family match
+   always beats the system emoji fallback, so every device draws the
+   same monochrome pieces. `unicode-range` keeps it to chess glyphs
+   only, so the surrounding text is untouched.                      */
+@font-face {
+  font-family: "Chess Glyphs";
+  src: url("/fonts/chess-symbols.woff") format("woff");
+  font-display: block;
+  unicode-range: U+2654-265F, U+FE0E;
+}
+
+.piece text,
+.side-badge {
+  font-family: "Chess Glyphs", "Apple Symbols", "Segoe UI Symbol",
+               "Noto Sans Symbols 2", serif;
+}

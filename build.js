@@ -36,7 +36,7 @@ const SIDES = {
   black: {
     title: "Openings for Black",
     sub: "Fighting defences that unbalance the game and play for a win, not a draw.",
-    badge: "♟ Black"
+    badge: "\u265F\uFE0E Black"
   }
 };
 
