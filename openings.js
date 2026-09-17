@@ -469,5 +469,169 @@ const OPENINGS = {
         explanation: "This is the classic position, a genuine crossroads of opening theory. Black's plans from here: …b6 and …Bb7 to develop and aim at the doubled pawns along the long diagonal; …Na5 or …Ba6 to hit c4; …e5 to fix the center; and …cxd4 at the right moment to leave White with an isolated pawn on d4. White has the bishop pair and must prove it — every one of your pieces already has a clear job."
       }
     ]
+  },
+
+  // ── Black vs 1.d4: King's Indian (Classical / Mar del Plata) ──────────────
+  // 1.d4 Nf6 2.c4 g6 3.Nc3 Bg7 4.e4 d6 5.Nf3 O-O 6.Be2 e5 7.O-O Nc6 8.d5 Ne7
+  // 9.Ne1 Nd7 10.f3 f5 11.Be3 f4 12.Bf2 g5 — ECO E97/E98 (Orthodox,
+  // Aronin–Taimanov). Locked centre, opposite-wing pawn storms.
+  "kid-mar-del-plata": {
+    key: "kid-mar-del-plata",
+    side: "black",
+    opening: "kings-indian",
+    variation: "mar-del-plata",
+    route: "black/kings-indian/mar-del-plata",
+    name: "King's Indian Defence",
+    subtitle: "Mar del Plata — Main Line",
+    line: "1.d4 Nf6 2.c4 g6 3.Nc3 Bg7 4.e4 d6 5.Nf3 O-O 6.Be2 e5 7.O-O Nc6 8.d5 Ne7 9.Ne1 Nd7 10.f3 f5 11.Be3 f4 12.Bf2 g5",
+    blurb: "The most ambitious answer to 1.d4: hand White the big centre, then blow it up and go after his king. The Mar del Plata is Black's kingside pawn storm in its purest form.",
+    intro: "Click <strong>Next</strong> to begin. The King's Indian is the sharpest of the main defences to 1.d4 — Black concedes space, then attacks. We follow the <strong>Classical / Mar del Plata main line</strong>, the branch Fischer, Kasparov and Nakamura all used to win with Black, and a natural companion to the Najdorf and Nimzo-Indian.",
+    boardFlip: true,
+    moves: [
+      {
+        ply: 1, san: "d4", from: "d2", to: "d4", piece: "wP",
+        capture: null, special: null,
+        title: "1. d4 — White Takes the Center",
+        explanation: "White plants a pawn in the centre and opens the c1-bishop's diagonal. In the King's Indian you will let him have that centre — for now. It becomes the target you attack later."
+      },
+      {
+        ply: 2, san: "Nf6", from: "g8", to: "f6", piece: "bN",
+        capture: null, special: null,
+        title: "1… Nf6 — The Indian Move Order",
+        explanation: "Develops a piece, controls e4, and commits nothing. From here …g6, …d6 and …e5 are all available — the King's Indian is a plan, not a sequence of forced moves."
+      },
+      {
+        ply: 3, san: "c4", from: "c2", to: "c4", piece: "wP",
+        capture: null, special: null,
+        title: "2. c4 — A Bigger Centre",
+        explanation: "White expands again: two pawns side by side in the centre. This is the space he will try to convert — and the space you are giving him on purpose."
+      },
+      {
+        ply: 4, san: "g6", from: "g7", to: "g6", piece: "bP",
+        capture: null, special: null,
+        title: "2… g6 — The Long Diagonal",
+        explanation: "The move that names the opening. Black prepares to fianchetto: the f8-bishop will go to g7, where it rakes the long diagonal and stares straight at d4."
+      },
+      {
+        ply: 5, san: "Nc3", from: "b1", to: "c3", piece: "wN",
+        capture: null, special: null,
+        title: "3. Nc3 — White Keeps Building",
+        explanation: "White defends d4 and prepares e2-e4. He is doing exactly what you want: the bigger his centre, the more there is to attack."
+      },
+      {
+        ply: 6, san: "Bg7", from: "f8", to: "g7", piece: "bB",
+        capture: null, special: null,
+        title: "3… Bg7 — The Fianchetto",
+        explanation: "The bishop takes the long diagonal and takes aim at d4, the base of White's centre. This bishop will be your main long-range weapon for the whole game — often the piece that finally breaks through."
+      },
+      {
+        ply: 7, san: "e4", from: "e2", to: "e4", piece: "wP",
+        capture: null, special: null,
+        title: "4. e4 — The Big Centre",
+        explanation: "White now has the ideal pawn duo on d4 and e4. It looks imposing, and it is — but it is also a slow, static target, and it gives you a fixed point to attack. This is the whole bargain of the King's Indian."
+      },
+      {
+        ply: 8, san: "d6", from: "d7", to: "d6", piece: "bP",
+        capture: null, special: null,
+        title: "4… d6 — Preparing the Strike",
+        explanation: "Supports the coming …e5, keeps White's own e4-e5 push unappealing, and opens a path for the c8-bishop. Nothing is committed yet."
+      },
+      {
+        ply: 9, san: "Nf3", from: "g1", to: "f3", piece: "wN",
+        capture: null, special: null,
+        title: "5. Nf3 — Standard Development",
+        explanation: "White develops and prepares to castle. He is ready for e4-e5 or d4-d5 whenever the conditions suit him — so you need to choose your moment first."
+      },
+      {
+        ply: 10, san: "O-O", from: "e8", to: "g8", piece: "bK",
+        capture: null, special: "castle-kingside",
+        title: "5… O-O — King Safety First",
+        explanation: "Note the order: Black castles BEFORE touching the centre. In the King's Indian you secure the king, then strike — because once the storm starts, there is no time to worry about it."
+      },
+      {
+        ply: 11, san: "Be2", from: "f1", to: "e2", piece: "wB",
+        capture: null, special: null,
+        title: "6. Be2 — White Will Castle",
+        explanation: "Development and castling in one. White's king is heading for the short side — which is exactly where your attacking pieces are going to gather."
+      },
+      {
+        ply: 12, san: "e5", from: "e7", to: "e5", piece: "bP",
+        capture: null, special: null,
+        title: "6… e5 — The Soul of the King's Indian",
+        explanation: "The central break that defines the whole opening. Black challenges d4 head-on, and now the position must resolve: if White captures, the centre opens and your pieces come alive; if he pushes, the centre locks. Either way you know where you are going."
+      },
+      {
+        ply: 13, san: "O-O", from: "e1", to: "g1", piece: "wK",
+        capture: null, special: "castle-kingside",
+        title: "7. O-O — Both Kings Castled",
+        explanation: "Both kings are on the short side and the centre is still tense. White must now decide how to meet the pressure on d4 — and both answers lead to a King's Indian middlegame."
+      },
+      {
+        ply: 14, san: "Nc6", from: "b8", to: "c6", piece: "bN",
+        capture: null, special: null,
+        title: "7… Nc6 — Three Attackers on d4",
+        explanation: "Now the bishop on g7, the pawn on e5 and the knight on c6 all hit d4 — three attackers against three defenders. White cannot hold the tension forever, and whichever way he releases it, you get the kind of position you want."
+      },
+      {
+        ply: 15, san: "d5", from: "d4", to: "d5", piece: "wP",
+        capture: null, special: null,
+        title: "8. d5 — White Locks the Centre",
+        explanation: "White closes the position rather than opening it. The pawns on d5 and e5 now face each other and neither side can easily change the structure — so the game becomes a race: you attack on the kingside, he attacks on the queenside. The clock starts now."
+      },
+      {
+        ply: 16, san: "Ne7", from: "c6", to: "e7", piece: "bN",
+        capture: null, special: null,
+        title: "8… Ne7 — The Mar del Plata Manoeuvre",
+        explanation: "The knight steps back so the kingside pawns can move, and reroutes toward g6 — its ideal attacking square, from where it supports …f4 and the …g4 push. Every piece is being sent to the side where you have more space."
+      },
+      {
+        ply: 17, san: "Ne1", from: "f3", to: "e1", piece: "wN",
+        capture: null, special: null,
+        title: "9. Ne1 — White Steps Aside",
+        explanation: "White vacates f3 so his f-pawn can go to f3 and prop up e4 — the standard answer to your storm. The knight will reroute to d3, from where it defends f4 and supports his own queenside push."
+      },
+      {
+        ply: 18, san: "Nd7", from: "f6", to: "d7", piece: "bN",
+        capture: null, special: null,
+        title: "9… Nd7 — Clearing f6",
+        explanation: "The other knight gets out of f6 so …f5 can be played with maximum force — and it can always come back later to hit e4. Two knights, both being repositioned before a single kingside pawn has moved."
+      },
+      {
+        ply: 19, san: "f3", from: "f2", to: "f3", piece: "wP",
+        capture: null, special: null,
+        title: "10. f3 — White Props Up e4",
+        explanation: "White reinforces the centre so his queenside expansion (c4-c5, b4-b5) stands on a solid base. He is betting that his attack arrives first — a bet worth taking if your own attack stalls."
+      },
+      {
+        ply: 20, san: "f5", from: "f7", to: "f5", piece: "bP",
+        capture: null, special: null,
+        title: "10… f5 — The Storm Begins",
+        explanation: "The thematic King's Indian break. Black opens the f-file and starts throwing pawns at White's king. From here the plan is a straight line: …f4 to lock the kingside, then …g5-g4, with the knight coming to g6 and the rook lifting via f7."
+      },
+      {
+        ply: 21, san: "Be3", from: "c1", to: "e3", piece: "wB",
+        capture: null, special: null,
+        title: "11. Be3 — Brace for Impact",
+        explanation: "White brings his dark-squared bishop into the defensive net: from e3 it can drop back to f2, where it covers g3 and h4 and props up the centre. It looks passive, but this is exactly where that bishop belongs when Black attacks on the kingside."
+      },
+      {
+        ply: 22, san: "f4", from: "f5", to: "f4", piece: "bP",
+        capture: null, special: null,
+        title: "11… f4 — Locking the Kingside",
+        explanation: "Black seals the kingside. The pawn on f4 takes g3 under control and prepares the …g5-g4 avalanche — and it also keeps White's e4-pawn pinned in place, so he cannot open the centre to escape your attack."
+      },
+      {
+        ply: 23, san: "Bf2", from: "e3", to: "f2", piece: "wB",
+        capture: null, special: null,
+        title: "12. Bf2 — The Standard Defence",
+        explanation: "The bishop slides to f2, its ideal defensive post: it covers g3 and h4 along the diagonal and shores up the centre. You will see this position in game after game — it is the best White can do."
+      },
+      {
+        ply: 24, san: "g5", from: "g6", to: "g5", piece: "bP",
+        capture: null, special: null,
+        title: "12… g5 — The Avalanche",
+        explanation: "The Mar del Plata tabiya — and the most double-edged mainstream position in the whole King's Indian. Your plan is a straight line from here: …g4 to open the g-file, …h5/…h4 to keep coming, …N(g6) and the rook lift …Rf7-g7 (or …Rf6-h6) to throw the last pieces in, and …Bf8 to reroute the bishop if White blocks the diagonal. If White takes with fxg4, recapturing …hxg4 opens the h-file. He counters on the queenside with c5, b4 and Nb5 — a genuine race. The practical rule: a tempo spent defending is a tempo lost from the attack."
+      }
+    ]
   }
 };

@@ -24,6 +24,7 @@ Live lessons:
 - `/white/italian/giuoco-piano/` — Italian Game, Giuoco Piano (White)
 - `/black/sicilian/najdorf/` — Sicilian Defence, Najdorf main line (Black)
 - `/black/nimzo-indian/rubinstein/` — Nimzo-Indian, Rubinstein main line (Black)
+- `/black/kings-indian/mar-del-plata/` — King's Indian, Mar del Plata main line (Black)
 
 ## Repository layout
 
